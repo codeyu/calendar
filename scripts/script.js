@@ -1,3 +1,29 @@
+const sixWeekdayInfo = {
+    '先勝': {
+        読み方:"せんかち",
+        意味: '急ぐことは吉。午前は吉、午後は凶。'
+    },
+    '友引': {
+        読み方:"ともびき",
+        意味: '友を引く。祝い事は良いが葬式などの凶事を忌む。朝夕は吉、正午は凶など。'
+    },
+    '先負': {
+        読み方:"せんぶ",
+        意味: '何事も控えめに平静を保つ日。午前は凶、午後は吉。'
+    },
+    '仏滅': {
+        読み方:"ぶつめつ",
+        意味: '万事凶。葬式や法事は構わない。'
+    },
+    '大安': {
+        読み方:"たいあん",
+        意味: '万事大吉。特に婚礼に良い。'
+    },
+    '赤口': {
+        読み方:"せきぐち",
+        意味: '凶日。特に祝事は大凶。火の元、刃物に要注意。正午は吉、朝夕は凶。'
+    }
+};
 function getUniqueHolidaysForYear(year) {
     const startDate = new Date(year, 0, 1);  // 1月1日
     const endDate = new Date(year, 11, 31);  // 12月31日
@@ -87,6 +113,20 @@ function getJapaneseEra(year) {
     return `${era}${eraYear}年`;
 }
 
+// 辅助函数：将数字转换为日本汉字日期
+function getJapaneseDate(day) {
+    const numbers = ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '二十', '三十'];
+    if (day <= 10) {
+        return numbers[day - 1] + '日';
+    } else if (day <= 20) {
+        return '十' + (day % 10 === 0 ? '' : numbers[day % 10 - 1]) + '日';
+    } else if (day <= 30) {
+        return '二十' + (day % 10 === 0 ? '' : numbers[day % 10 - 1]) + '日';
+    } else {
+        return '三十' + (day % 10 === 0 ? '' : numbers[day % 10 - 1]) + '日';
+    }
+}
+
 // 判断是否为日本节假日
 function isJapaneseHoliday(date) {
     return holiday_jp.isHoliday(date);
@@ -140,11 +180,40 @@ function updateDateDetails(date) {
    // 3. 获取日本天皇年号和年数
    const japaneseEra = getJapaneseEra(date.getFullYear());
    
-   // 4. 获取节气
+   // 4. 获取节气或特殊日期名称
    const lunarInfo = calendar.solar2lunar(date.getFullYear(), date.getMonth() + 1, date.getDate());
-   const solarTerm = lunarInfo.Term || ''; // 如果没有节气，则为空字符串
+   let specialDate = lunarInfo.Term || ''; // 首先检查是否有节气
 
-    combinedInfoElement.textContent = `${japaneseEra} ${lunarMonth} ${solarTerm}`;
+   if (!specialDate) {
+       const month = date.getMonth() + 1;
+       const day = date.getDate();
+       
+       if (month === 1 && day === 1) {
+           specialDate = '元日';
+       } else if (month === 12 && day === 31) {
+           specialDate = '大晦日';
+       } else if (day === 1) {
+           specialDate = '月立';
+       } else {
+           // 如果不是特殊日期，显示日本的汉字日期
+           specialDate = getJapaneseDate(day);
+       }
+   }
+
+    combinedInfoElement.textContent = `${japaneseEra} ${lunarMonth} ${specialDate}`;
+
+    const sixWeekday = getSixWeekday(date);
+    const sixWeekdayExplanationElement = document.getElementById('six-weekday-explanation');
+
+    if (sixWeekdayInfo[sixWeekday]) {
+        const info = sixWeekdayInfo[sixWeekday];
+        sixWeekdayExplanationElement.innerHTML = `
+            <strong>${sixWeekday}(${info.読み方})</strong><br>
+            ${info.意味}
+        `;
+    } else {
+        sixWeekdayExplanationElement.textContent = '';
+    }
 
     // 清空事件列表
     eventsListElement.innerHTML = '';
@@ -166,6 +235,14 @@ function updateCurrentTime() {
 
     // 每秒更新一次时间
     setInterval(updateTime, 1000);
+}
+
+function updateSelectedDate(date, clickedDayDiv) {
+    // 移除所有日期的 'today' 类
+    document.querySelectorAll('.days > div').forEach(div => div.classList.remove('today'));
+    
+    // 给点击的日期添加 'today' 类
+    clickedDayDiv.classList.add('today');
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -242,6 +319,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             daysContainer.appendChild(dayDiv);
             dayDiv.addEventListener('click', () => {
+                updateSelectedDate(date, dayDiv);
                 updateDateDetails(new Date(year, month - 1, i));
             });
         }

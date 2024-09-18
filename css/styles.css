@@ -327,3 +327,15 @@ button:hover {
         margin-left: 0;
     }
 }
+.six-weekday-info {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+}
+
+.six-weekday-info p {
+    font-size: 14px;
+    line-height: 1.4;
+    margin: 0;
+}
