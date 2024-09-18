@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日本のカレンダー</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="calendar-container">
+        <div class="calendar">
+            <div class="header">
+                <select id="holiday">
+                </select>
+                <div class="header-center">
+                    <select id="year">
+                        <!-- 使用JavaScript动态生成1900-2050年的选项 -->
+                    </select>
+                    <div class="month-selector">
+                        <button id="prevMonth">&lt;</button>
+                        <select id="month">
+                            <option value="1">1月</option>
+                            <option value="2">2月</option>
+                            <option value="3">3月</option>
+                            <option value="4">4月</option>
+                            <option value="5">5月</option>
+                            <option value="6">6月</option>
+                            <option value="7">7月</option>
+                            <option value="8">8月</option>
+                            <option value="9">9月</option>
+                            <option value="10">10月</option>
+                            <option value="11">11月</option>
+                            <option value="12">12月</option>
+                        </select>
+                        <button id="nextMonth">&gt;</button>
+                    </div>
+                </div>
+                <button id="todayBtn">今日</button>
+            </div>
+            <div class="weekdays">
+                <div>日</div>
+                <div>月</div>
+                <div>火</div>
+                <div>水</div>
+                <div>木</div>
+                <div>金</div>
+                <div>土</div>
+            </div>
+            <div class="days">
+                <!-- 日期将由 JavaScript 动态生成 -->
+            </div>
+        </div>
+        <div class="date-details">
+            <div class="info">
+                <p id="full-date"></p>
+                <div class="day" id="current-time"></div>
+                <div class="detail">
+                    <p id="combined-info"></p>
+                </div>
+                <div class="list" id="events-list">
+                    <!-- 事件列表将通过 JavaScript 动态添加 -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2024 日本のカレンダー All rights reserved.</p>
+    </footer>
+    <script src="scripts/holiday_jp.js""></script>
+    <script src="scripts/lunarCalendar.js"></script>
+    <script src="scripts/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,329 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    min-height: 100vh; /* 确保body至少占满整个视口高度 */
+    display: flex;
+    flex-direction: column;
+}
+.calendar-container {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+.calendar {
+    flex: 1;
+    max-width: 800px; /* 调整日历的最大宽度 */
+    /* 保留现有的日历样式 */
+}
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #f0f0f0;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+.header select {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.header-center {
+    display: flex;
+    align-items: center;
+}
+.header-center select {
+    margin: 0 5px;
+}
+.header button {
+    padding: 5px 10px;
+    background-color: #4285f4;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.weekdays {
+    display: flex;
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #e0e0e0;
+}
+.weekdays div {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    color: #666;
+}
+.days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px; /* 增加日期之间的间距 */
+    background-color: #f5f5f5; /* 将背景色改为浅灰色，与body背景色一致 */
+    padding: 4px; /* 增加整体的内边距，与gap保持一致 */
+}
+.days > div {
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 10px 0;
+    transition: background-color 0.3s ease;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.days > div:not(.today):not(.holiday):hover {
+    background-color: #e6f3ff;
+}
+.days > div.holiday {
+    background-color: #FEF4F4;
+}
+.days > div.holiday:not(.today):hover {
+    background-color: #FFE4E1;
+}
+.days > div.today {
+    background-color: #4285f4;
+    color: white;
+}
+.days > div.today:hover {
+    background-color: #3b78e7;
+}
+.weekdays div:first-child,
+.days > div:nth-child(7n+1) {
+    color: #e74c3c; /* 星期日红色 */
+}
+
+.weekdays div:last-child,
+.days > div:nth-child(7n) {
+    color: #3498db; /* 星期六蓝色 */
+}
+.today {
+    background-color: #4285f4 !important; /* 确保今日的背景色优先级最高 */
+    color: white !important;
+    border-radius: 4px; /* 添加圆角 */
+}
+.solar-date {
+    font-size: 18px; /* 增大公历日期字体 */
+    font-weight: bold; /* 加粗公历日期 */
+}
+.lunar-date {
+    font-size: 12px;
+    color: #666;
+    margin-top: 4px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    line-height: 1.2;
+}
+.today .lunar-date {
+    color: white; /* 确保今日的农历日期也是白色 */
+}
+
+@media screen and (max-width: 600px) {
+    .calendar-container {
+        padding: 30px 10px 10px; /* 在小屏幕上减少顶部padding */
+    }
+
+    .calendar {
+        max-width: 100%;
+    }
+
+    .days > div {
+        padding: 5px 0;
+    }
+
+    .solar-date {
+        font-size: 16px;
+    }
+
+    .lunar-date {
+        font-size: 10px;
+    }
+
+    .days {
+        gap: 2px; /* 在小屏幕上减小间距 */
+        padding: 2px;
+    }
+}
+.holiday {
+    color: #e74c3c; /* 休日の色を赤に設定 */
+}
+
+footer {
+    text-align: center;
+    padding: 20px 0;
+    background-color: #f0f0f0;
+    color: #666;
+    width: 100%;
+    margin-top: auto; /* 将footer推到底部 */
+}
+
+footer p {
+    margin: 0;
+    font-size: 14px;
+}
+
+@media screen and (max-width: 600px) {
+    footer {
+        padding: 15px 0;
+    }
+
+    footer p {
+        font-size: 12px;
+    }
+}
+
+.month-selector {
+    display: flex;
+    align-items: center;
+}
+
+.month-selector button {
+    background-color: #4285f4;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    margin: 0 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.month-selector button:hover {
+    background-color: #3367d6;
+}
+
+/* 为所有按钮添加手型光标 */
+button,
+select,
+.days > div {
+    cursor: pointer;
+}
+
+/* 如果之前有设置 .days > div:hover 的样式，可以保留或修改如下 */
+.days > div:not(.today):hover {
+    background-color: #e6f3ff;
+    cursor: pointer;
+}
+
+/* 为选择框添加手型光标 */
+select {
+    cursor: pointer;
+}
+
+/* 如果有其他可点击元素，也可以添加类似的样式 */
+.clickable-element {
+    cursor: pointer;
+}
+
+.holiday .lunar-date {
+    color: #FF4500; /* 红橙色，与日期颜色相同 */
+}
+
+/* 为所有按钮设置基本样式 */
+button {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* 按钮悬停效果 */
+button:hover {
+    background-color: #e0e0e0;
+}
+
+/* 特别为今日按钮设置样式 */
+#todayBtn {
+    background-color: #4285f4;
+    color: white;
+    border: none;
+}
+
+/* 今日按钮的悬停效果 */
+#todayBtn:hover {
+    background-color: #3b78e7;
+}
+
+/* 月份控制按钮样式（如果需要特别指定） */
+#prevMonth, #nextMonth {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+/* 月份控制按钮悬停效果 */
+#prevMonth:hover, #nextMonth:hover {
+    background-color: #e0e0e0;
+}
+
+.date-details {
+    width: 200px; /* 减小宽度 */
+    margin-left: 12px; /* 减小与日历的间距 */
+    padding: 15px;
+    background-color: #5a95f5; /* 使用今日的背景色，但稍微淡一些 */
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    color: white; /* 改变文字颜色以适应新背景 */
+}
+
+.info {
+    text-align: center;
+}
+
+.info #full-date {
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.info .day {
+    font-size: 32px;
+    font-weight: bold;
+    color: #ffffff; /* 改变日期数字颜色 */
+    line-height: 1;
+    margin-bottom: 8px;
+}
+
+.info .detail p {
+    margin: 4px 0;
+    font-size: 14px;
+}
+
+.list .item {
+    margin-top: 8px;
+    padding: 6px;
+    background-color: rgba(255, 255, 255, 0.2); /* 半透明白色背景 */
+    border-radius: 5px;
+    text-align: left;
+}
+
+/* 响应式设计 */
+@media screen and (max-width: 1200px) {
+    .calendar-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .calendar {
+        max-width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .date-details {
+        width: 100%;
+        max-width: 350px;
+        margin-left: 0;
+    }
+}
