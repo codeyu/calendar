@@ -339,3 +339,26 @@ button:hover {
     line-height: 1.4;
     margin: 0;
 }
+.divider {
+    border-top: 1px dashed #ccc;
+    margin: 15px 0;
+}
+
+.list {
+    margin-top: 15px;
+}
+
+#events-list {
+    padding: 10px;
+    border-radius: 5px;
+    color: #333; /* 深色文字 */
+}
+
+#events-list p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+#events-list strong {
+    color: #f3edeb; 
+}

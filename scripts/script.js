@@ -24,6 +24,25 @@ const sixWeekdayInfo = {
         意味: '凶日。特に祝事は大凶。火の元、刃物に要注意。正午は吉、朝夕は凶。'
     }
 };
+// 祝日解释对象
+const holidayExplanations = {
+    '元日': '年のはじめを祝う。',
+    '成人の日': 'おとなになったことを自覚し、みずから生き抜こうとする青年を祝いはげます。',
+    '建国記念の日': '建国をしのび、国を愛する心を養う。',
+    '天皇誕生日': '天皇の誕生日を祝う。',
+    '春分の日': '自然をたたえ、生物をいつくしむ。',
+    '昭和の日': '激動の日々を経て、復興を遂げた昭和の時代を顧み、国の将来に思いをいたす。',
+    '憲法記念日': '日本国憲法の施行を記念し、国の成長を期する。',
+    'みどりの日': '自然に親しむとともにその恩恵に感謝し、豊かな心をはぐくむ。',
+    'こどもの日': 'こどもの人格を重んじ、こどもの幸福をはかるとともに、母に感謝する。',
+    '海の日': '海の恩恵に感謝するとともに、海洋国日本の繁栄を願う。',
+    '山の日': '山に親しむ機会を得て、山の恩恵に感謝する。',
+    '敬老の日': '多年にわたり社会につくしてきた老人を敬愛し、長寿を祝う。',
+    '秋分の日': '祖先をうやまい、なくなった人々をしのぶ。',
+    'スポーツの日': 'スポーツを楽しみ、他者を尊重する精神を培うとともに、健康で活力ある社会の実現を願う。',
+    '文化の日': '自由と平和を愛し、文化をすすめる。',
+    '勤労感謝の日': '勤労をたっとび、生産を祝い、国民たがいに感謝しあう。'
+};
 function getUniqueHolidaysForYear(year) {
     const startDate = new Date(year, 0, 1);  // 1月1日
     const endDate = new Date(year, 11, 31);  // 12月31日
@@ -217,6 +236,12 @@ function updateDateDetails(date) {
 
     // 清空事件列表
     eventsListElement.innerHTML = '';
+    // 检查是否为祝日
+    const holiday = getJapaneseHolidayInfo(date);
+    if (holiday && holiday.isHoliday) {
+        const explanation = holidayExplanations[holiday.name] || '';
+        eventsListElement.innerHTML = `<p><strong>${holiday.name}:</strong> ${explanation}</p>`;
+    }
 }
 
 function updateCurrentTime() {
